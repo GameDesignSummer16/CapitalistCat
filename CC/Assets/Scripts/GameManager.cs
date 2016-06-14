@@ -1,36 +1,53 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
+
+	public GameObject lastCheckpoint;
+
 	// Use this for initialization
-	void Start () {
-		
+	void Start () 
+	{
+	
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
 	
 	}
 
-	public void RestartLevel()
+	public void restartLevel()
 	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		
+		Application.LoadLevel (Application.loadedLevel);
+		Debug.Log ("restart");
+
+	}
+	public void play()
+	{
+		
+		Application.LoadLevel (1);
+		Debug.Log ("Play");
 	}
 
-	public void ExitLevel()
+	public void mainMenu()
 	{
-		SceneManager.LoadScene("Menu");
+
+		Application.LoadLevel (0);
+		Debug.Log ("Main Menu");
 	}
 
-	public void Play()
+	public void restartFromCheckpoint()
 	{
-		SceneManager.LoadScene(1);
+		
+		Application.LoadLevel (Application.loadedLevel);
+		Debug.Log ("Checkpoint Reset");
 	}
 
-    public void ExitGame()
-    {
-        Application.Quit();
-    }
+	public void exitGame()
+	{
+		Application.Quit ();
+	}
 }
