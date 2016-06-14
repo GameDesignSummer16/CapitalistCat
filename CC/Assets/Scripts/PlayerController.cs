@@ -15,7 +15,7 @@ using UnityEngine.UI;
 using Prime31;
 using System.Collections;
 
-public class PlayerBehavior : MonoBehaviour 
+public class PlayerController : MonoBehaviour 
 {
 
 	public float gravity = -35;
@@ -52,10 +52,10 @@ public class PlayerBehavior : MonoBehaviour
 		_currentHealth = health;
 
 		gameCamera.GetComponent<CameraFollow2D> ().startCameraFollow (this.gameObject);
-		
+
 
 	}
-	
+
 	// Update is called once per frame
 	void Update () 
 	{
@@ -130,7 +130,7 @@ public class PlayerBehavior : MonoBehaviour
 		}
 		else //if infinite mode is active:
 		{
-			
+
 			if (enableWalking) {
 				if (_controller.isGrounded && Input.GetKey (KeyCode.LeftShift)) {
 					velocity.x = walkSpeed * runMultiplier;
@@ -189,13 +189,13 @@ public class PlayerBehavior : MonoBehaviour
 			//touched checkpoint
 			Debug.Log(col.gameObject.name);
 			startCheckpoint = col.gameObject;
-	
+
 		}
 	}
 
 	private void PlayerFallDeath()
 	{
-		
+
 		_currentHealth = 0;
 		float normalizedHealth = (float) _currentHealth / (float) health;
 		healthBar.GetComponent<RectTransform> ().sizeDelta = new Vector2 (normalizedHealth * 256, 32);
@@ -206,7 +206,7 @@ public class PlayerBehavior : MonoBehaviour
 
 	private void PlayerDamage(int damage)
 	{
-		
+
 		_currentHealth -= damage;
 		float normalizedHealth = (float) _currentHealth / (float) health;
 		healthBar.GetComponent<RectTransform> ().sizeDelta = new Vector2 (normalizedHealth * 256, 32);
