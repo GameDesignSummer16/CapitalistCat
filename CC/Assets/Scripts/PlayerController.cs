@@ -9,6 +9,10 @@
 * or in normal platformer mode. Several public variables
 * have been added: a run multiplier, and booleans
 * for toggling infinite runner mode and walking.
+* 
+* Feature Complete:
+* - Added Features:
+* - Pausing, End of Screen, 
 */
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,50 +24,63 @@ public class PlayerController : MonoBehaviour
 
 	public float gravity = -35;
 	public float jumpHeight = 10;
-	public float walkSpeed = 3;
+	public float minimumWalkSpeed = 3;
 	public float friction = 0.96f;
-	public int health = 100;
+	public float pickUpMultiplier = 1.5f;
 	public int runMultiplier = 2;
 	public bool infiniteRunnerMode = true;
 	public bool enableWalking = true;
 
-	public GameObject startCheckpoint;
-	public GameObject healthBar;
+	public GameObject gameManager;
+	public GameObject soundManager;
 	public GameObject gameCamera;
+	public GameObject endlevelPanel;
 	public GameObject gameOverPanel;
+	public GameObject UIPanel;
+	public GameObject levelFinish;
+	public Text speedText;
+	public Text scoreText;
+	public Image progressBar;
 
 	private CharacterController2D _controller;
 	private AnimationController2D _animator;
-	private int _currentHealth = 0;
 	private bool playerControl = true;
-
-
-
+	private float startPosition;
+	private float endPosition;
+	private float levelDistance;
+	private float walkSpeed;
+	private int currentSpeed;
 
 	// Use this for initialization
 	void Start () 
 	{
-
-		if (!(ReferenceEquals (startCheckpoint, null)))
-			transform.position = startCheckpoint.transform.position;
-
 		_controller = gameObject.GetComponent<CharacterController2D> ();
 		_animator = gameObject.GetComponent<AnimationController2D> ();
-		_currentHealth = health;
 
 		gameCamera.GetComponent<CameraFollow2D> ().startCameraFollow (this.gameObject);
-
-
+		startPosition = transform.position.x;
+		endPosition = levelFinish.transform.position.x;
+		levelDistance = endPosition - startPosition;
+		Time.timeScale = 1;
+		walkSpeed = minimumWalkSpeed;
 	}
 
 	// Update is called once per frame
 	void Update () 
 	{
-		if (playerControl == true) 
+		//check for pause input
+		if (Input.GetKeyDown (KeyCode.P) && playerControl) 
 		{
-			_controller.move (playerInput () * Time.deltaTime);
+			pauseGame ();
 		}
-
+			
+		if (playerControl == true) {
+			updateProgressBar ();
+			Vector3 input = playerInput ();
+			_controller.move (input * Time.deltaTime);
+			currentSpeed = (int)input.x;
+			speedText.text = "Speed: " + currentSpeed;
+		}
 	}
 
 	public Vector3 playerInput()
@@ -87,21 +104,15 @@ public class PlayerController : MonoBehaviour
 					if (_controller.isGrounded && Input.GetKey (KeyCode.LeftShift)) 
 					{
 						velocity.x = -walkSpeed * runMultiplier;
-						_animator.setAnimation ("RunPlayer");
 					} 
 					else if (_controller.isGrounded) 
 					{
 						velocity.x = -walkSpeed;
-						_animator.setAnimation ("WalkPlayer");
 					}
 				} else 
 				{
 					velocity.x = -walkSpeed * runMultiplier;
-					_animator.setAnimation ("RunPlayer");
 				}
-
-				_animator.setFacing ("Left");
-
 			} 
 			else if (Input.GetAxis ("Horizontal") > 0) 
 			{
@@ -134,36 +145,35 @@ public class PlayerController : MonoBehaviour
 			if (enableWalking) {
 				if (_controller.isGrounded && Input.GetKey (KeyCode.LeftShift)) {
 					velocity.x = walkSpeed * runMultiplier;
-					_animator.setAnimation ("RunPlayer");
 				} else if (_controller.isGrounded) {
 					velocity.x = walkSpeed;
-					_animator.setAnimation ("WalkPlayer");
 				}
 			} else 
 			{
 				velocity.x = walkSpeed * runMultiplier;
-				_animator.setAnimation ("RunPlayer");
 			}
 
-			_animator.setFacing ("Right");
 		}
-
-
-
 
 		if (Input.GetAxis ("Jump") > 0 && _controller.isGrounded) 
 		{
+			//play sound effect
+			soundManager.GetComponent<SoundManager> ().playSFX("jump");
+
+			//neutralize momentum
+			if(walkSpeed > minimumWalkSpeed)
+				walkSpeed -= pickUpMultiplier;
+
 			if (Input.GetKey (KeyCode.LeftShift)) {
 				velocity.y = Mathf.Sqrt (4f * jumpHeight * -gravity);	
 			} 
 			else 
 			{
-				//Debug.log ("Space bar pressed);
 				velocity.y = Mathf.Sqrt (2f * jumpHeight * -gravity);
 			}
 
 			//play jump animation
-			_animator.setAnimation("JumpPlayer");
+
 		}
 
 		velocity.x *= friction;
@@ -178,51 +188,32 @@ public class PlayerController : MonoBehaviour
 	{
 
 		if (col.tag == "KillZ") {
-			PlayerFallDeath ();
+			PlayerDeath ();
 		} else if (col.tag == "Damaging") {
-			PlayerDamage (30);
+			PlayerDamage (1);
 		} else if (col.tag == "Finish") {
-			Application.LoadLevel (0);
-		} else if (col.tag == "Checkpoint") {
+			EndOfLevel ();
+		} else if (col.tag == "Pickup") {
+			soundManager.GetComponent<SoundManager> ().playSFX("pickup");
+			walkSpeed += pickUpMultiplier;
+			col.gameObject.SetActive (false);
 
-			//attaches player to the most recently
-			//touched checkpoint
-			Debug.Log(col.gameObject.name);
-			startCheckpoint = col.gameObject;
 
 		}
 	}
-
-	private void PlayerFallDeath()
-	{
-
-		_currentHealth = 0;
-		float normalizedHealth = (float) _currentHealth / (float) health;
-		healthBar.GetComponent<RectTransform> ().sizeDelta = new Vector2 (normalizedHealth * 256, 32);
-		gameCamera.GetComponent<CameraFollow2D> ().stopCameraFollow();
-
-		gameOverPanel.SetActive (true);
-	}
-
+		
 	private void PlayerDamage(int damage)
 	{
-
-		_currentHealth -= damage;
-		float normalizedHealth = (float) _currentHealth / (float) health;
-		healthBar.GetComponent<RectTransform> ().sizeDelta = new Vector2 (normalizedHealth * 256, 32);
-
-		if (_currentHealth <= 0) 
+		walkSpeed -= damage;
+		if (walkSpeed == 0) 
 		{
 			PlayerDeath ();
 		}
-
 	}
 
 	private void PlayerDeath()
 	{
-		playerControl = false;
-		_animator.setAnimation ("DeathPlayer");
-
+		freezeGame();
 		gameOverPanel.SetActive (true);
 	}
 
@@ -234,5 +225,30 @@ public class PlayerController : MonoBehaviour
 			if (this.transform.parent != null)
 				transform.parent = null;
 		}
+	}
+	private void updateProgressBar()
+	{
+		float currentPosition = transform.position.x - startPosition;
+		progressBar.fillAmount = (currentPosition / levelDistance);
+	}
+
+	private void pauseGame()
+	{
+		gameManager.GetComponent<GameManager> ().pauseGame ();
+	}
+
+	private void EndOfLevel()
+	{
+		freezeGame ();
+		UIPanel.SetActive (false);
+		scoreText.text = "Score: " + currentSpeed;
+		endlevelPanel.SetActive (true);
+	}
+
+	private void freezeGame()
+	{
+		gameCamera.GetComponent<CameraFollow2D> ().stopCameraFollow ();
+		Time.timeScale = 0;
+		playerControl = false;
 	}
 }
