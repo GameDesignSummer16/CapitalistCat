@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Sunday Alpha Build.unity
+- path: Assets/Scenes/Saturday 23 Build.unity
   isLoaded: 1
   isActive: 1
