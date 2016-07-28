@@ -178,6 +178,8 @@ public class PlayerController : MonoBehaviour
 			EndOfLevel ();
 		} else if (col.tag == "Pickup") {
 			DoPickup (col);
+		} else if (col.tag == "Enemy Trigger"){
+			TriggerEnemy(col);
 		}
 	}
 
@@ -296,7 +298,8 @@ public class PlayerController : MonoBehaviour
 		 * the player is falling
 		 */
 		if (infiniteRunnerMode == true) {
-			if (positiveVelocity)
+			if (positiveVelocity) //TODO: I believe there will be a problem here when 
+				//the game flips into the sewer the pickups may actually slow them down. Enemies may pick them up
 				walkSpeed += pickUpBoost;
 			else
 				walkSpeed -= pickUpBoost;
@@ -334,6 +337,11 @@ public class PlayerController : MonoBehaviour
 			walkSpeed = walkSpeed * -1; 
 			Flip ();
 		}
+	}
+
+	private void TriggerEnemy (Collider2D col)
+	{
+		col.gameObject.GetComponent<EnemyTriggerScript>().enemy.GetComponent<TriggeredEnemy>().setActive();
 	}
 
 	// Flip sprite / animation over the x-axis
@@ -374,17 +382,18 @@ public class PlayerController : MonoBehaviour
 	 */
 	private void RegulateSpeed ()
 	{
-		if (currentSpeed < 4) {
+		float absoluteVelocity = Mathf.Abs(currentSpeed);
+		if (Mathf.Abs(absoluteVelocity) < 4) {
 			acceleration = 1.1f;
-		} else if (currentSpeed > 4 && currentSpeed < 5) {
+		} else if (absoluteVelocity > 4 && absoluteVelocity < 5) {
 			acceleration = 1.01f;
-		} else if (currentSpeed > 5 && currentSpeed < 6) {
+		} else if (absoluteVelocity > 5 && absoluteVelocity < 6) {
 			acceleration = 1.001f;
-		} else if (currentSpeed > 6 && currentSpeed < 7) {
+		} else if (absoluteVelocity > 6 && absoluteVelocity < 7) {
 			acceleration = 1.0001f;
-		} else if (currentSpeed > 7 && currentSpeed < 8) {
+		} else if (absoluteVelocity > 7 && absoluteVelocity < 8) {
 			acceleration = 1.00001f;
-		} else if (currentSpeed > 8) {
+		} else if (absoluteVelocity > 8) {
 			acceleration = 0.99f;
 		}
 
