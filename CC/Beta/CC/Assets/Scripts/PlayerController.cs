@@ -39,8 +39,16 @@ public class PlayerController : MonoBehaviour
 	public float minimumWalkSpeed = 3;
 	public float pickUpBoost = 1.5f;
 	public int runMultiplier = 2;
-	public int damageSlowdown = 1;
+	public int damageSlowdown = 2;
 	public bool infiniteRunnerMode = true;
+
+	//accelleration coefficient
+	public float accel_0_to_4 = 1.1f;
+	public float accel_4_to_5 = 1.075f;
+	public float accel_5_to_6 = 1.05f;
+	public float accel_6_to_7 = 1.025f;
+	public float accel_7_to_8 = 1.01f;
+	public float accel_deaccel_to_8 = 0.99f;
 
 	public GameObject gameManager;
 	public GameObject soundManager;
@@ -188,11 +196,7 @@ public class PlayerController : MonoBehaviour
 	 */
 	private void PlayerDamage (int damage, Collider2D col)
 	{
-				
-		walkSpeed = 4;
-		if (walkSpeed == 0) {
-			PlayerDeath ();
-		}
+		walkSpeed -= damageSlowdown;
 	}
 
 	/*
@@ -381,24 +385,35 @@ public class PlayerController : MonoBehaviour
 	 * of acceleration to the walkspeed. 
 	 */
 	private void RegulateSpeed ()
-	{
-		float absoluteVelocity = Mathf.Abs(currentSpeed);
-		if (Mathf.Abs(absoluteVelocity) < 4) {
-			acceleration = 1.1f;
-		} else if (absoluteVelocity > 4 && absoluteVelocity < 5) {
-			acceleration = 1.01f;
-		} else if (absoluteVelocity > 5 && absoluteVelocity < 6) {
-			acceleration = 1.001f;
-		} else if (absoluteVelocity > 6 && absoluteVelocity < 7) {
-			acceleration = 1.0001f;
-		} else if (absoluteVelocity > 7 && absoluteVelocity < 8) {
-			acceleration = 1.00001f;
-		} else if (absoluteVelocity > 8) {
-			acceleration = 0.99f;
-		}
+	{		
+		if (walkSpeed <= 0) {
+			walkSpeed = 1;
+		} else if (walkSpeed < 4) {
+			//acceleration = 1.1f;
+			acceleration = accel_0_to_4;
+		} else if (walkSpeed > 4 && walkSpeed < 5) {
+			//acceleration = 1.01f;
+			acceleration = accel_4_to_5;
+		} else if (walkSpeed > 5 && walkSpeed < 6) {
+			//acceleration = 1.001f;
+			acceleration = accel_5_to_6;
+		} else if (walkSpeed > 6 && walkSpeed < 7) {
+			//acceleration = 1.0001f;
+			acceleration = accel_6_to_7;
+		} else if (walkSpeed > 7 && walkSpeed < 8) {
+			//acceleration = 1.00001f;
+			acceleration = accel_7_to_8;
+		} else if (walkSpeed > 8 || walkSpeed < 9) {
+			acceleration = 1f;
+		} else if (walkSpeed > 9) {
+			//acceleration = 0.99f;
+			acceleration = accel_deaccel_to_8;
+		} //else if (walkSpeed > 10) {
+		//	walkSpeed = 10;
+		//}
 
 		walkSpeed = walkSpeed * acceleration;
-		
+
 	}
 
 
