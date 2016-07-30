@@ -1,0 +1,45 @@
+Initialize engine version: 5.3.5f1 (960ebf59018a)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 10.1]
+    Renderer: Intel(R) HD Graphics 3000 (ID=0x126)
+    Vendor:   Intel
+    VRAM:     976 MB
+Default GameObject Tag: Finish already registered
+ 
+(Filename:  Line: 88)
+
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\AlleyCat\Documents\GitHub\CapitalistCat\CC\fc_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\AlleyCat\Documents\GitHub\CapitalistCat\CC\fc_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\AlleyCat\Documents\GitHub\CapitalistCat\CC\fc_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\AlleyCat\Documents\GitHub\CapitalistCat\CC\fc_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\AlleyCat\Documents\GitHub\CapitalistCat\CC\fc_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\AlleyCat\Documents\GitHub\CapitalistCat\CC\fc_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\AlleyCat\Documents\GitHub\CapitalistCat\CC\fc_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\AlleyCat\Documents\GitHub\CapitalistCat\CC\fc_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.076 seconds
+Platform assembly: C:\Users\AlleyCat\Documents\GitHub\CapitalistCat\CC\fc_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\AlleyCat\Documents\GitHub\CapitalistCat\CC\fc_Data\Managed\System.dll (this message is harmless)
+desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 0.767267 ms
+Play
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 37)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 5.820395 ms
+
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 833.
+Total: 0.383428 ms (FindLiveObjects: 0.056652 ms CreateObjectMapping: 0.037768 ms MarkObjects: 0.283260 ms  DeleteObjects: 0.004926 ms)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Teleport.Start () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 1ac8 -> priority: 1 
