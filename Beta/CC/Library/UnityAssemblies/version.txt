@@ -1,14 +1,6 @@
-<<<<<<< HEAD
-5.3.4f1:2.3.0.0
-StandaloneOSXIntel64
+5.3.5f1:2.2.0.0
+StandaloneWindows
 C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll
 C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
 C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
-=======
-5.3.4f1:2.3.0.0
-StandaloneOSXIntel64
-C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll
-C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
-C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
->>>>>>> origin/master
 C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll

@@ -1,0 +1,24 @@
+Kung fu Kats
+
+Features: 	5-Most important 	1-Least important
+5: June 20th 	4:June 22nd 	3:June 24th 	2:June 26th 	1:June 28th  
+
+5 – Jump								Arash/Brandon
+5 - Infinite runner forced movement					Arash
+5 - Platforms (duh)							Brandon
+5 - On platform enemy (static)					Arash/Hayden
+4 - a core character design (can be refined later)			Jiankun
+4 - Momentum buildup (character acceleration)			Arash/Brandon
+4 - Catnip (score increase + speed boost)				Arash/Skyler
+4 - Transition between runner and plummet				Arash
+4 - Character enemy (static or moving)				Arash/Hayden
+4 - Plummet section (move left and right as character falls)		Brandon
+4 - UI elements (score, level progression, pause/menu [speed?])	Arash/Skyler
+3 - Destructible “enemies” (plummet)				Arash/Brandon
+3 - level complete checkpoints					Arash
+3 - Main menu / Title screen						Skyler
+2 - End of level screen / fanfare					Skyler
+2 – Background design						Jiankun
+1 - Sound effects (bowling strike sound)				Skyler
+1 - Music (at least 1 track)						Skyler
+1 – intro								Skyler
